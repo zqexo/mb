@@ -1,0 +1,282 @@
+{% load static %}
+{% load my_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <title>{% block title %}Мир Белья{% endblock %}</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.05);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            opacity: 0.85;
+            margin-top: auto;
+        }
+
+        .my-icon {
+            width: 13px;
+            height: 13px;
+        }
+
+        .my-icon-2 {
+            width: 16px;
+            height: 16px;
+        }
+
+        .menu-button img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .menu-dropdown a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu-dropdown a:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+            margin-bottom: 2.5%;
+            font-weight: bold;
+            font-size: 20px;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.6);
+            opacity: 0.8;
+            text-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user-info a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .user-info a:hover {
+            text-decoration: underline;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .search-form input {
+            width: 200px;
+        }
+
+        .brand-title {
+            font-size: 100px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: rgba(0, 100, 255, 0.6);
+            opacity: 0.8;
+            text-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            transform: translateY(-50%);
+        }
+
+        .brand-title-2 {
+            position: absolute;
+            left: 25%;
+            top: 50%;
+            font-size: 22px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.6);
+            opacity: 0.5;
+            text-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            transform: rotate(90deg);
+        }
+
+        .cart-icon {
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 5px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            margin-right: 20px;
+        }
+
+        .cart-icon img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+
+        .cart-badge {
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+        li a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        li a:hover {
+            text-decoration: underline;
+        }
+
+        li a img {
+            display: inline-block;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-image: url('{% static "img/background.jpg" %}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+<nav>
+    <!-- Профиль пользователя (слева) -->
+    <div class="">
+        <div class="">
+            {% if user.is_authenticated %}
+                <div class="user-info menu-button me-3" style="background-position: center;">
+                    <img src="{{ user.avatar | media_filter }}" alt="Аватар">
+                    <a href="{% url 'users:profile' %}">{{ user.email }}</a>
+                </div>
+            {% else %}
+                <div class="user-info menu-button me-3 mt-auto">
+                    <a class="ms-md-auto" href="{% url 'users:login' %}">Войти </a>
+                    <a class="ms-md-auto" href="{% url 'users:register' %}">Зарегистрироваться</a>
+                </div>
+                </div>
+            {% endif %}
+    </div>
+</nav>
+<div class=" brand-title-container">
+    <div class="brand-title text-center">МИР БЕЛЬЯ</div>
+</div>
+<small class="brand-title-2">Ялта</small>
+
+
+
+<!-- Корзина -->
+<a href="{% url 'cart:cart_detail' %}" class="cart-icon text-center">
+    <img src="{% static 'crud_icons/cart.png' %}" alt="Корзина">
+    {% if not cart_is_empty %}
+        <div class="cart-badge" style="background-color: red; width: 10px; height: 10px; border-radius: 50%;"></div>
+    {% endif %}
+</a>
+<!-- Поиск (справа) -->
+<form class="search-form" action="{% url 'catalog:search_results' %}" method="get">
+    <label>
+        <input class="form-control" type="search" name="q" placeholder="Поиск">
+    </label>
+    <button class="btn btn-primary ms-2" type="submit">Найти</button>
+</form>
+
+</nav>
+{% include 'catalog/includes/inc_menu.html' %}
+<div class="container py-4">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Футер -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>О нас</h5>
+                <p><b> Довольный клиент — наш приоритет.</b><br>Мы предлагаем лучший ассортимент товаров по самым
+                    выгодным ценам.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Контакты</h5>
+                <ul>
+
+                    <li>Email: mao0009@mail.ru</li>
+                    <li>Телефон: + 7 978 841 83 48
+
+                    </li>
+                    <li>Адрес: Ялта, ул. Киевская, 4
+
+
+                    </li>
+                    <li class="text-center">
+                        <a href="https://t.me/mir_belia">
+                            <img src="{% static 'crud_icons/tg.png' %}" alt="Телега" class="my-icon mb-1">
+                        </a>
+                        &larr; Телега | Карта &rarr;
+                        <a href="https://yandex.ru/maps/org/mir_belya/97242341489/">
+                            <img src="{% static 'crud_icons/map.png' %}" alt="Карта" class="my-icon-2 mb-1">
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Полезные ссылки</h5>
+                <ul>
+                    <li><a class="text-white" href="#">О компании</a></li>
+                    <li><a class="text-white" href="#">Доставка и оплата</a></li>
+                    <li><a class="text-white" href="#">Политика конфиденциальности</a></li>
+                    <li><a class="text-white" href="#">Контакты</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="mt-2 text-center">&copy; 2025 Интернет-магазин ИП Нетёсова Л.А.<br>Все права защищены.</p>
+    </div>
+</footer>
+</body>
+</html>

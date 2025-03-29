@@ -1,0 +1,87 @@
+{% extends 'users/base_generic.html' %}
+{% load form_tags %}
+
+{% block content %}
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Вход</h2>
+                <form method="post" id="login-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        {{ form.username|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        {{ form.password|add_class:"form-control" }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+                    <br>
+                    <a href="{% url 'users:register' %}">Нет аккаунта?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginSuccessModal" tabindex="-1" aria-labelledby="loginSuccessModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginSuccessModalLabel">Успешный вход</h5>
+                </div>
+                <div class="modal-body">
+                    Вход выполнен успешно. Сейчас вы будете перенаправлены.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="loginOkButton">ОК</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let form = document.getElementById("login-form");
+            if (form) {
+                form.addEventListener("submit", function (event) {
+                    event.preventDefault();  // Останавливаем стандартную отправку формы
+                    let formData = new FormData(form);
+
+                    fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                $("#loginSuccessModal").modal("show");  // Показываем модальное окно
+                                document.getElementById("loginOkButton").addEventListener("click", function () {
+                                    window.location.href = data.redirect_url;  // Переход после входа
+                                });
+                            } else {
+                                console.error("Ошибка входа", data.errors);
+                            }
+                        })
+                        .catch(error => console.error("Ошибка:", error));
+                });
+            }
+        });
+    </script>
+{% endblock %}

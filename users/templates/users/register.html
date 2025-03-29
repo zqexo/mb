@@ -1,0 +1,102 @@
+{% extends 'users/base_generic.html' %}
+{% load form_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Регистрация</h2>
+            <form method="post" id="register-form">
+                {% csrf_token %}
+
+                <!-- Блок для отображения ошибок -->
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    {{ form.email|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="password1">Пароль</label>
+                    {{ form.password1|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="password2">Подтверждение пароля</label>
+                    {{ form.password2|add_class:"form-control" }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+            <div class="text-center mt-3">
+                <a href="{% url 'users:login' %}">Уже есть Аккаунт</a>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Уведомление</h5>
+            </div>
+            <div class="modal-body">
+                Письмо с подтверждением отправлено. Проверьте почту.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="okButton">ОК</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let form = document.getElementById("register-form");
+    if (form) {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();  // Останавливаем стандартную отправку формы
+            let formData = new FormData(form);
+
+            fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $("#successModal").modal("show");  // Показываем модальное окно
+                    document.getElementById("okButton").addEventListener("click", function() {
+                        window.location.href = data.success_url;  // Переход после подтверждения
+                    });
+                } else {
+                    console.error("Ошибка регистрации", data.errors);
+                    // Покажем ошибки формы
+                    let errorContainer = document.querySelector('.alert-danger');
+                    if (!errorContainer) {
+                        errorContainer = document.createElement('div');
+                        errorContainer.classList.add('alert', 'alert-danger');
+                        form.insertBefore(errorContainer, form.firstChild);
+                    }
+                    errorContainer.innerHTML = '<ul>' + data.errors.map(error => `<li>${error}</li>`).join('') + '</ul>';
+                }
+            })
+            .catch(error => console.error("Ошибка:", error));
+        });
+    }
+});
+</script>
+{% endblock %}

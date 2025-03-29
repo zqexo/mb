@@ -1,0 +1,78 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Контакты</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                font-family: 'Alegreya', serif;
+                color: white;
+                height: 300%;
+            }
+
+            .info-overlay {
+                width: 100%;
+                background: rgba(0, 0, 0, 0.25); /* Прозрачный фон */
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            .info-overlay table {
+                width: 100%;
+                font-size: 30px;
+            }
+
+            .info-overlay td {
+                padding: 5px 10px;
+                font-size: 30px;
+            }
+
+            .info-overlay a {
+                color: deepskyblue;/* Светло-голубой цвет для ссылок */
+                text-decoration: none;
+                font-size: 30px;
+            }
+
+            .info-overlay a:hover {
+                text-decoration: underline;
+            }
+
+
+            .map-container iframe {
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="info-overlay">
+            <table>
+                <tr>
+                    <td class="w-25">Локация</td>
+                    <td><a href="https://yandex.ru/maps/org/mir_belya/97242341489/">Республика Крым, Ялта, Киевская
+                        улица, 4</a></td>
+                </tr>
+                <tr>
+                    <td class="w-25">Телефон</td>
+                    <td>+7(978)841-83-48</td>
+                </tr>
+                <tr>
+                    <td class="w-25">Telegram</td>
+                    <td><a href="https://t.me/mir_belia">@mir_belia</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="map-container">
+            <iframe src="https://yandex.ru/map-widget/v1/?z=12&ol=biz&oid=97242341489" width="1296" frameborder="0"
+                    height="700" ></iframe>
+        </div>
+    </body>
+    </html>
+{% endblock %}
+

@@ -1,0 +1,252 @@
+/* Основной стиль для фона */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Alegreya', serif;
+    color: white;
+}
+
+li a {
+    text-decoration: none;
+    display: inline-block; /* Чтобы ссылку можно было подчеркивать */
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+li a img {
+    display: inline-block;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+/* Стиль для кнопок */
+.btn-block {
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50px; /* Закруглённые кнопки */
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-add-to-cart {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 50px; /* Закруглённые кнопки */
+    font-family: 'Playfair Display', serif;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #218838;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Дополнительные стили для формы */
+.form-group label {
+    font-weight: bold;
+    font-family: 'Playfair Display', serif;
+}
+
+.form-control {
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'Playfair Display', serif;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Карточки для товаров */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    border-bottom: 1px solid #ddd;
+    object-fit: cover;
+    height: 200px;
+    border-radius: 15px 15px 0 0; /* Скругление верхней части */
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Пагинация */
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #0056b3;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50px; /* Закругление кнопок пагинации */
+    font-family: 'Playfair Display', serif;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    border-radius: 50px; /* Закругление кнопок пагинации */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+}
+
+/* Модальное окно */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    font-family: 'Playfair Display', serif;
+}
+
+.modal-footer .btn {
+    background-color: #007bff;
+    border: none;
+    border-radius: 50px; /* Закруглённые кнопки */
+    font-family: 'Playfair Display', serif;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.modal-footer .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* responsive.css */
+
+/* Для экранов шириной до 1200px */
+@media (max-width: 1200px) {
+    .navbar {
+        height: 10vh;
+    }
+
+    .brand-title {
+        font-size: 80px;
+    }
+
+    .brand-title-2 {
+        font-size: 18px;
+    }
+
+    .user-info {
+        font-size: 18px;
+    }
+}
+
+/* Для экранов шириной до 992px */
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .brand-title {
+        font-size: 70px;
+    }
+
+    .search-form {
+        position: relative;
+        top: 10%;
+        left: 0;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        margin-bottom: 10px;
+    }
+}
+
+/* Для экранов шириной до 768px */
+@media (max-width: 768px) {
+    .brand-title {
+        font-size: 50px;
+    }
+
+    .user-info {
+        font-size: 16px;
+    }
+
+    .search-form input {
+        width: 80%;
+    }
+
+    .cart-icon {
+        top: 40%;
+        right: 5%;
+    }
+
+    .footer {
+        font-size: 12px;
+    }
+
+    .footer .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer h5 {
+        font-size: 14px;
+    }
+
+    .footer ul {
+        padding-left: 0;
+        list-style: none;
+    }
+}
+
+/* Для экранов шириной до 576px */
+@media (max-width: 576px) {
+    .navbar {
+        height: 60px;
+        padding: 10px;
+    }
+
+    .brand-title {
+        font-size: 40px;
+    }
+
+    .user-info {
+        font-size: 14px;
+        max-width: 200px;
+    }
+
+    .cart-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .my-icon {
+        width: 15px;
+        height: 15px;
+    }
+
+    .my-icon-2 {
+        width: 20px;
+        height: 20px;
+    }
+
+    .search-form input {
+        width: 70%;
+    }
+}
+

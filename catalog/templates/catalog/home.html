@@ -1,0 +1,187 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Главная страница</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                font-family: 'Alegreya', serif;
+                color: white;
+                height: 100%;
+            }
+
+            .swiper {
+                width: 100%;
+                padding-bottom: 50px; /* Чтобы пагинация не перекрывала слайды */
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-size: cover;
+                background-position: center;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                position: relative;
+                max-width: 100%; /* Ограничиваем ширину */
+                height: 360px;
+                background-color: #333; /* Фон для карточек */
+            }
+
+            .card img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                transition: all 0.3s ease;
+            }
+
+            .category-name {
+                font-size: 2rem;
+                font-weight: bold;
+                color: royalblue;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9);
+                z-index: 1; /* Текст всегда сверху */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .card:hover {
+                filter: brightness(82%);
+            }
+
+            .card:hover .category-name {
+                opacity: 1;
+            }
+
+            .brand-title-3 {
+                font-size: 50px;
+                font-weight: bold;
+                text-transform: uppercase;
+                background: linear-gradient(45deg, #007bff, #00c6ff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: rgba(0, 100, 255, 0.6);
+                opacity: 0.8;
+                text-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            }
+
+            /* Адаптивность для разных экранов */
+            @media (min-width: 1200px) {
+                .swiper-slide {
+                    width: 23%; /* Показать 4 карточки в ряд */
+                }
+            }
+
+            @media (min-width: 1024px) and (max-width: 1199px) {
+                .swiper-slide {
+                    width: 30%; /* Показать 3 карточки в ряд */
+                }
+            }
+
+            @media (min-width: 768px) and (max-width: 1023px) {
+                .swiper-slide {
+                    width: 48%; /* Показать 2 карточки в ряд */
+                }
+            }
+
+            @media (max-width: 767px) {
+                .swiper-slide {
+                    width: 100%; /* Одна карточка на экране */
+                }
+            }
+
+        </style>
+    </head>
+    <body>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'img/banner2.jpg' %}" class="d-block w-100" alt="Баннер 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'img/banner1.jpg' %}" class="d-block w-100" alt="Баннер 2">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'img/banner3.jpg' %}" class="d-block w-100" alt="Баннер 3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <!-- Рейтинг (по центру) -->
+    <div class="rating-frame ms-auto me-3" id="rating-frame">
+        <iframe src="https://yandex.ru/sprav/widget/rating-badge/97242341489?type=rating" width="150"
+                height="50" frameborder="0"></iframe>
+    </div>
+
+    <div class="container mt-4">
+        <div class="my-4">
+            <h3 class="text-center ms-lg-auto brand-title-3"><b>Категории</b></h3><br>
+            <div class="swiper mySwiper mt-auto">
+                <div class="swiper-wrapper">
+                    {% for category in categories %}
+                        <div class="swiper-slide">
+                            <a href="{{ category.get_absolute_url }}" class="card shadow-sm"
+                               style="background-image: url('{{ category.image.url }}');">
+                                <div class="category-name text-center">{{ category.name }}</div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var swiper = new Swiper(".mySwiper", {
+                slidesPerView: 4,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                loop: true,
+                mousewheel: true, // Добавление поддержки прокрутки колесиком мыши
+                breakpoints: {
+                    768: {slidesPerView: 2},
+                    1024: {slidesPerView: 3},
+                    1200: {slidesPerView: 4}
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
+{% endblock %}
